@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Entry point only — everything of substance lives in harness/lib/spinel_check/.
+
+harness = File.expand_path('..', __dir__)
+
+ENV['BUNDLE_GEMFILE'] ||= File.join(harness, 'Gemfile')
+begin
+  require 'bundler/setup'
+rescue LoadError, StandardError => e
+  abort "spinel-check: dependencies are not ready (#{e.class}: #{e.message})\n" \
+        "Run:  cd #{harness} && bundle install"
+end
+
+$LOAD_PATH.unshift(File.join(harness, 'lib'))
+require 'spinel_check'
+
+begin
+  if ARGV.empty?
+    # No command is a usage error, not a successful run — the caller is usually a script.
+    SpinelCheck::CLI.start(['help'])
+    exit 1
+  end
+  SpinelCheck::CLI.start(ARGV)
+rescue SpinelCheck::Error => e
+  abort "spinel-check: #{e.message}"
+rescue Interrupt
+  # A sweep is routinely cut short by hand; that is not a crash, and the backtrace is noise.
+  warn "\nspinel-check: interrupted"
+  exit 130
+end

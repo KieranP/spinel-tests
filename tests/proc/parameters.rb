@@ -1,0 +1,46 @@
+# frozen_string_literal: true
+# Proc#parameters
+p(->(x, y = 1) {}.parameters)
+a228 = ->(x, y = 1) {}.parameters; p(a228)
+p(->(x, *rest) {}.parameters)
+p(->(x, k:) {}.parameters)
+p(->(x, **kw) {}.parameters)
+p(->(x, &b) {}.parameters)
+p(->(x, y) {}.parameters)
+# proc (:opt) vs lambda (:req) parameter kinds, plus assignment forms
+p(proc { |x, y| }.parameters)
+pv010 = proc { |x, y| }.parameters; p(pv010)
+p(lambda { |x, y| }.parameters)
+lv011 = lambda { |x, y| }.parameters; p(lv011)
+v012 = ->(x, *rest) {}.parameters; p(v012)
+v013 = ->(x, k:) {}.parameters; p(v013)
+p(proc { |x, y| }.parameters(lambda: true))
+p(->(x, y) {}.parameters(lambda: false))
+# every remaining lambda shape
+p(->() {}.parameters)
+v020 = ->() {}.parameters; p(v020)
+p(->(a) {}.parameters)
+p(->(a:, b: 1) {}.parameters)
+v021 = ->(a:, b: 1) {}.parameters; p(v021)
+p(->(a, b = 1, *c, d:, e: 2, **f, &g) {}.parameters)
+v022 = ->(a, b = 1, *c, d:, e: 2, **f, &g) {}.parameters; p(v022)
+p(->(*) {}.parameters)
+p(->(**) {}.parameters)
+p(->((a, b)) {}.parameters)
+v027 = ->((a, b)) {}.parameters; p(v027)
+# (`->((a, b)) {}` above), parameters on a later proc reports mangled names: the required name
+# comes back as :"" and the rest name carries a numeric suffix
+# the same shapes as a non-lambda proc
+p(proc { |a, *b| }.parameters)
+v023 = proc { |a, *b| }.parameters; p(v023)
+p(proc { |a, b = 1, *c, d:, e: 2, **f, &g| }.parameters)
+v024 = proc { |a, b = 1, *c, d:, e: 2, **f, &g| }.parameters; p(v024)
+p(proc { |(a, b)| }.parameters)
+p(->(x, (a, b)) {}.parameters)
+# the lambda: keyword flips :req and :opt on the positional parameters
+p(proc { |a, *b| }.parameters(lambda: true))
+v025 = proc { |a, *b| }.parameters(lambda: true); p(v025)
+p(->(a, b = 1, *c) {}.parameters(lambda: false))
+v026 = ->(a, b = 1, *c) {}.parameters(lambda: false); p(v026)
+p(->(a, b) {}.parameters(lambda: true))
+p(proc { |a, b| }.parameters(lambda: false))

@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+# obtaining an Enumerator (no block) — #class of the result
+p([1, 2, 3].each.class)
+v001 = [1, 2, 3].each.class; p(v001)
+a001 = [1, 2, 3]; p(a001.each.class)
+p([1, 2, 3].each_with_index.class)
+v002 = [1, 2, 3].each_with_index.class; p(v002)
+p("abc".each_char.class)
+c001 = "abc".each_char.class; p(c001)
+p((1..3).each.class)
+v003 = (1..3).each.class; p(v003)
+r001 = (1..3); p(r001.each.class)
+p([1, 2, 3].map.class)
+a002 = [1, 2, 3].map; p(a002.class)
+p((1..3).map.class)

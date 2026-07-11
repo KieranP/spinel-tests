@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+# Each of these replaces hand-rolled code that used to live in bin/spinel-check.
+gem 'diff-lcs',         '~> 2.0'  # ruby-vs-spinel diffs in-process (was: mktmpdir + `diff`)
+gem 'parallel',         '~> 2.1'  # bounded worker pool (was: a hand-rolled Queue + threads)
+gem 'rainbow',          '~> 3.1'  # status colouring; self-disables when stdout is not a tty
+gem 'ruby-progressbar', '~> 1.13' # sweep progress (was: manual \r\e[K counters in two places)
+gem 'thor',             '~> 1.5'  # subcommand dispatch, arg arity, help (was: case ARGV[0])
+
+group :development do
+  gem 'minitest', '~> 6.0'
+  gem 'rake',     '~> 13.0'
+end

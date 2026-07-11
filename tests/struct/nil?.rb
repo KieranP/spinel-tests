@@ -1,0 +1,7 @@
+# frozen_string_literal: true
+Point = Struct.new(:x, :y)
+
+# Point#nil?
+p(Point.new(1, 2).nil?)
+a006 = Point.new(1, 2); p(a006.nil?)
+a007 = Point.new(1, 2); v007 = a007.nil?; p v007
